@@ -61,7 +61,7 @@ int calcularHeuristica(List<int> torres) {
 /// las jugadas que se pueden hacer desde un estado actual. Revisamos
 /// cual disco esta en la cima de cada poste y vemos a cual poste lo
 /// podriamos mover legalmente.
-List<List<int>> generarSucesores(List<int> estadoActual) {
+List<List<int>> funcionSucesores(List<int> estadoActual) {
   int n = estadoActual.length;
   List<List<int>> sucesores = [];
 
@@ -113,7 +113,7 @@ List<List<int>> generarSucesores(List<int> estadoActual) {
 /// para luego reconstruir la ruta.
 List<EstadoHanoi> expandirEstado(EstadoHanoi actual) {
   // 1. Obtener la lista de sucesores como listas de enteros
-  List<List<int>> sucesoresListas = generarSucesores(actual.torres);
+  List<List<int>> sucesoresListas = funcionSucesores(actual.torres);
 
   // 2. Transformarlos en objetos 'EstadoHanoi'
   List<EstadoHanoi> nuevos = [];
@@ -136,7 +136,7 @@ List<EstadoHanoi> expandirEstado(EstadoHanoi actual) {
 /// Esta función será la que determina si ya llegamos al objetivo.
 /// Queremos que todos los discos esten en el poste 2, así que
 /// si esto se cumple retornamos true, si no, false.
-bool esObjetivo(List<int> torres) {
+bool funcionObjetivo(List<int> torres) {
   for (int poste in torres) {
     if (poste != 2) return false;
   }
@@ -183,7 +183,7 @@ List<EstadoHanoi> aStarHanoi(int numeroDiscos) {
     EstadoHanoi actual = abiertos.removeAt(indiceMejor);
 
     // 3. Revisar si es el objetivo
-    if (esObjetivo(actual.torres)) {
+    if (funcionObjetivo(actual.torres)) {
       // Reconstruir la ruta y regresar
       return _reconstruirRuta(actual);
     }
@@ -242,7 +242,7 @@ Future<void> imprimirEstadoHanoi(List<int> torres) async {
 /// Aqui escogemos el numero de discos y llamamos al A*, luego
 /// mostramos el resultado paso a paso.
 Future<void> main() async {
-  int numeroDiscos = 3; 
+  int numeroDiscos = 4; 
   List<EstadoHanoi> solucion = aStarHanoi(numeroDiscos);
 
   if (solucion.isEmpty) {
